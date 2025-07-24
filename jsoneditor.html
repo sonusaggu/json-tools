@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced JSON Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.0/dist/jsoneditor.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #f1f3f4;
+            --danger: #ea4335;
+            --success: #34a853;
+            --dark: #202124;
+            --light: #ffffff;
+            --border: #dadce0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h1 i {
+            font-size: 1.2em;
+        }
+        
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: var(--light);
+        }
+        
+        #jsoneditor {
+            width: 100%;
+            height: 500px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        
+        .status-bar {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: var(--danger);
+            border-left: 3px solid var(--danger);
+            padding-left: 10px;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            color: var(--success);
+            border-left: 3px solid var(--success);
+            padding-left: 10px;
+        }
+        
+        #output {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        
+        .file-ops {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+            }
+            button, select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-code"></i> JSON Editor</h1>
+        
+        <div class="toolbar">
+            <button id="format" class="btn-primary">
+                <i class="fas fa-indent"></i> Format
+            </button>
+            <button id="compact" class="btn-secondary">
+                <i class="fas fa-compress-alt"></i> Compact
+            </button>
+            <button id="validate" class="btn-primary">
+                <i class="fas fa-check"></i> Validate
+            </button>
+            <button id="getjson" class="btn-success">
+                <i class="fas fa-eye"></i> View JSON
+            </button>
+            <button id="clear" class="btn-danger">
+                <i class="fas fa-trash"></i> Clear
+            </button>
+            <select id="mode" class="btn-secondary">
+                <option value="tree">Tree View</option>
+                <option value="code">Code Editor</option>
+                <option value="form">Form View</option>
+                <option value="text">Text View</option>
+                <option value="view">View Only</option>
+            </select>
+            <select id="theme" class="btn-secondary">
+                <option value="light">Light Theme</option>
+                <option value="dark">Dark Theme</option>
+            </select>
+        </div>
+        
+        <div id="jsoneditor"></div>
+        
+        <div id="status" class="status-bar"></div>
+        <pre id="output"></pre>
+        
+        <div class="file-ops">
+            <button id="load" class="btn-secondary">
+                <i class="fas fa-folder-open"></i> Load File
+            </button>
+            <button id="save" class="btn-success">
+                <i class="fas fa-save"></i> Save File
+            </button>
+            <button id="copy" class="btn-secondary">
+                <i class="far fa-copy"></i> Copy JSON
+            </button>
+        </div>
+    </div>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    
+    <!-- JSONEditor -->
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.0/dist/jsoneditor.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize editor
+            const container = document.getElementById('jsoneditor');
+            const options = {
+                mode: 'tree',
+                modes: ['tree', 'view', 'form', 'code', 'text'],
+                search: true,
+                history: true,
+                onChange: updateStatus,
+                onError: showError
+            };
+            const editor = new JSONEditor(container, options);
+            
+            // Set initial JSON
+            const initialJson = {
+                "app": "JSON Editor",
+                "version": 1.0,
+                "features": ["edit", "validate", "format"],
+                "author": {
+                    "name": "Your Name",
+                    "email": "your@email.com"
+                },
+                "active": true,
+                "tags": ["json", "editor", "tool"]
+            };
+            editor.set(initialJson);
+            
+            // Toolbar actions
+            document.getElementById('format').addEventListener('click', () => {
+                editor.setMode('tree');
+                updateStatus('Formatted JSON');
+            });
+            
+            document.getElementById('compact').addEventListener('click', () => {
+                editor.setMode('code');
+                const json = editor.get();
+                editor.setText(JSON.stringify(json));
+                updateStatus('Compacted JSON');
+            });
+            
+            document.getElementById('validate').addEventListener('click', validateJson);
+            
+            document.getElementById('getjson').addEventListener('click', showJson);
+            
+            document.getElementById('clear').addEventListener('click', () => {
+                editor.set({});
+                updateStatus('Editor cleared');
+            });
+            
+            document.getElementById('mode').addEventListener('change', () => {
+                const mode = document.getElementById('mode').value;
+                editor.setMode(mode);
+                updateStatus(`Switched to ${mode} mode`);
+            });
+            
+            document.getElementById('theme').addEventListener('change', () => {
+                const theme = document.getElementById('theme').value;
+                editor.setTheme(theme);
+                updateStatus(`Switched to ${theme} theme`);
+            });
+            
+            // File operations
+            document.getElementById('load').addEventListener('click', loadFile);
+            document.getElementById('save').addEventListener('click', saveFile);
+            document.getElementById('copy').addEventListener('click', copyJson);
+            
+            // Helper functions
+            function updateStatus(message, isError = false) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = message || '';
+                statusEl.className = isError ? 'status-bar error' : 'status-bar success';
+                
+                if (!message) {
+                    statusEl.className = 'status-bar';
+                }
+            }
+            
+            function showError(err) {
+                updateStatus(`Error: ${err.message}`, true);
+            }
+            
+            function validateJson() {
+                try {
+                    editor.get();
+                    updateStatus('✓ Valid JSON');
+                } catch (err) {
+                    showError(err);
+                }
+            }
+            
+            function showJson() {
+                try {
+                    const json = editor.get();
+                    const outputEl = document.getElementById('output');
+                    outputEl.style.display = 'block';
+                    outputEl.textContent = JSON.stringify(json, null, 2);
+                    updateStatus('JSON displayed below');
+                } catch (err) {
+                    showError(err);
+                }
+            }
+            
+            function loadFile() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json,application/json';
+                
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = event => {
+                        try {
+                            const json = JSON.parse(event.target.result);
+                            editor.set(json);
+                            updateStatus(`Loaded: ${file.name}`);
+                        } catch (err) {
+                            showError(err);
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            }
+            
+            function saveFile() {
+                try {
+                    const json = editor.get();
+                    const data = JSON.stringify(json, null, 2);
+                    const blob = new Blob([data], {type: 'application/json'});
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'data.json';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    updateStatus('File saved as data.json');
+                } catch (err) {
+                    showError(err);
+                }
+            }
+            
+            function copyJson() {
+                try {
+                    const json = editor.get();
+                    const text = JSON.stringify(json, null, 2);
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        updateStatus('JSON copied to clipboard');
+                        
+                        // Visual feedback
+                        const copyBtn = document.getElementById('copy');
+                        const icon = copyBtn.querySelector('i');
+                        icon.classList.replace('far', 'fas');
+                        setTimeout(() => icon.classList.replace('fas', 'far'), 2000);
+                    });
+                } catch (err) {
+                    showError(err);
+                }
+            }
+            
+            // Initial status
+            updateStatus('Ready to edit JSON');
+        });
+    </script>
+</body>
+</html>
