@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         "count": 42
     };
 
-    // Update line numbers
+    // Update line numbers and sync scroll
     function updateLineNumbers() {
         const lines = jsonInput.value.split('\n');
         let lineNumbersHTML = '';
@@ -34,12 +34,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         lineNumbers.innerHTML = lineNumbersHTML;
+        syncScroll();
     }
 
-    // Initialize line numbers
-    updateLineNumbers();
+    // Synchronize scrolling between textarea and line numbers
+    function syncScroll() {
+        lineNumbers.scrollTop = jsonInput.scrollTop;
+    }
 
-    // Update character count and line numbers
+    // Initialize editor
+    function initEditor() {
+        updateLineNumbers();
+        jsonInput.style.paddingLeft = '60px';
+        jsonInput.addEventListener('scroll', syncScroll);
+    }
+
+    // Initialize the editor
+    initEditor();
+
+    // Update character count and line numbers on input
     jsonInput.addEventListener('input', function() {
         updateLineNumbers();
         charCount.textContent = `${jsonInput.value.length} characters`;
@@ -47,17 +60,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load sample JSON
     sampleBtn.addEventListener('click', function() {
-        jsonInput.value = JSON.stringify(sampleJSON, null, 2);
-        charCount.textContent = `${jsonInput.value.length} characters`;
-        jsonOutput.textContent = 'Click "Validate" to check the JSON';
+        const formattedJSON = JSON.stringify(sampleJSON, null, 2);
+        jsonInput.value = formattedJSON;
+        charCount.textContent = `${formattedJSON.length} characters`;
+        jsonOutput.innerHTML = 'Click "Validate" to check the JSON';
+        jsonOutput.className = '';
         errorContainer.classList.remove('visible');
         updateLineNumbers();
+        
+        // Reset any error line highlighting
+        const lineNumbersElements = lineNumbers.querySelectorAll('br');
+        lineNumbersElements.forEach(br => {
+            if (br.previousSibling && br.previousSibling.classList) {
+                br.previousSibling.classList.remove('error-line');
+            }
+        });
     });
 
     // Clear all
     clearBtn.addEventListener('click', function() {
         jsonInput.value = '';
-        jsonOutput.textContent = 'Validation results will appear here...';
+        jsonOutput.innerHTML = 'Validation results will appear here...';
+        jsonOutput.className = '';
         errorContainer.classList.remove('visible');
         charCount.textContent = '0 characters';
         updateLineNumbers();
@@ -68,16 +92,25 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             JSON.parse(jsonInput.value);
             jsonOutput.innerHTML = '<span class="valid">✓ Valid JSON</span>';
+            jsonOutput.className = 'valid-output';
             errorContainer.classList.remove('visible');
+            
+            // Remove any error line highlighting
+            const lineNumbersElements = lineNumbers.querySelectorAll('br');
+            lineNumbersElements.forEach(br => {
+                if (br.previousSibling && br.previousSibling.classList) {
+                    br.previousSibling.classList.remove('error-line');
+                }
+            });
         } catch (error) {
+            jsonOutput.innerHTML = '<span class="invalid">✗ Invalid JSON</span>';
+            jsonOutput.className = 'invalid-output';
             displayError(error);
         }
     });
 
     // Display error details
     function displayError(error) {
-        jsonOutput.innerHTML = '<span class="invalid">✗ Invalid JSON</span>';
-        
         // Parse error message to get position
         const match = error.message.match(/position (\d+)/);
         const errorPosition = match ? parseInt(match[1]) : null;
@@ -131,4 +164,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+
+    // Handle window resize to maintain proper layout
+    window.addEventListener('resize', function() {
+        syncScroll();
+    });
 });

@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const sampleBtn = document.getElementById('sampleBtn');
     const charCount = document.getElementById('charCount');
     const inputLineNumbers = document.getElementById('inputLineNumbers');
-    const outputLineNumbers = document.getElementById('outputLineNumbers');
 
     // Sample JSON data
     const sampleJSON = {
@@ -28,61 +27,60 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Initialize editor
+    function initEditor() {
+        // Set initial padding for line numbers
+        jsonInput.style.paddingLeft = '60px';
+        
+        // Initialize line numbers
+        updateInputLineNumbers();
+        
+        // Set up scroll synchronization
+        jsonInput.addEventListener('scroll', syncScroll);
+    }
+
     // Update line numbers for input
     function updateInputLineNumbers() {
         const lines = jsonInput.value.split('\n');
-        let lineNumbers = '';
+        let lineNumbersHTML = '';
         
         for (let i = 0; i < lines.length; i++) {
-            lineNumbers += (i + 1) + '<br>';
+            lineNumbersHTML += (i + 1) + '<br>';
         }
         
-        inputLineNumbers.innerHTML = lineNumbers;
+        inputLineNumbers.innerHTML = lineNumbersHTML;
+        syncScroll();
     }
 
-    // Update line numbers for output
-    function updateOutputLineNumbers() {
-        const lines = jsonOutput.textContent.split('\n');
-        let lineNumbers = '';
-        
-        for (let i = 0; i < lines.length; i++) {
-            lineNumbers += (i + 1) + '<br>';
-        }
-        
-        outputLineNumbers.innerHTML = lineNumbers;
+    // Synchronize scrolling between textarea and line numbers
+    function syncScroll() {
+        inputLineNumbers.scrollTop = jsonInput.scrollTop;
     }
 
-    // Initialize line numbers
-    updateInputLineNumbers();
-    updateOutputLineNumbers();
+    // Initialize the editor
+    initEditor();
 
-    // Update character count and line numbers
+    // Update character count and line numbers on input
     jsonInput.addEventListener('input', function() {
         updateInputLineNumbers();
         charCount.textContent = `${jsonInput.value.length} characters`;
     });
 
-    // Observe output changes for line numbers
-    const observer = new MutationObserver(function(mutations) {
-        updateOutputLineNumbers();
-    });
-
-    observer.observe(jsonOutput, {
-        childList: true,
-        subtree: true,
-        characterData: true
-    });
-
-    // Load sample JSON - FIXED THIS FUNCTION
+    // Load sample JSON - FIXED VERSION
     sampleBtn.addEventListener('click', function() {
         try {
-            jsonInput.value = JSON.stringify(sampleJSON, null, 2);
-            charCount.textContent = `${jsonInput.value.length} characters`;
+            const formattedJSON = JSON.stringify(sampleJSON, null, 2);
+            jsonInput.value = formattedJSON;
+            charCount.textContent = `${formattedJSON.length} characters`;
             jsonOutput.textContent = 'Click "Format" or "Minify" to process the JSON';
             updateInputLineNumbers();
-            updateOutputLineNumbers();
+            
+            // Reset scroll position
+            jsonInput.scrollTop = 0;
+            syncScroll();
         } catch (error) {
             console.error("Error loading sample:", error);
+            jsonOutput.innerHTML = `<span class="invalid">✗ Error loading sample: ${error.message}</span>`;
         }
     });
 
@@ -92,38 +90,48 @@ document.addEventListener('DOMContentLoaded', function() {
         jsonOutput.textContent = 'Formatted JSON will appear here...';
         charCount.textContent = '0 characters';
         updateInputLineNumbers();
-        updateOutputLineNumbers();
     });
 
-    // Format JSON
+    // Format JSON with proper error handling
     formatBtn.addEventListener('click', function() {
         try {
+            if (!jsonInput.value.trim()) {
+                throw new Error("Input is empty");
+            }
+            
             const parsedJson = JSON.parse(jsonInput.value);
             const formattedJson = JSON.stringify(parsedJson, null, 4);
             jsonOutput.textContent = formattedJson;
-            updateOutputLineNumbers();
         } catch (error) {
             jsonOutput.innerHTML = `<span class="invalid">✗ ${error.message}</span>`;
-            updateOutputLineNumbers();
         }
     });
 
-    // Minify JSON
+    // Minify JSON with proper error handling
     minifyBtn.addEventListener('click', function() {
         try {
+            if (!jsonInput.value.trim()) {
+                throw new Error("Input is empty");
+            }
+            
             const parsedJson = JSON.parse(jsonInput.value);
             const minifiedJson = JSON.stringify(parsedJson);
             jsonOutput.textContent = minifiedJson;
-            updateOutputLineNumbers();
         } catch (error) {
             jsonOutput.innerHTML = `<span class="invalid">✗ ${error.message}</span>`;
-            updateOutputLineNumbers();
         }
     });
 
-    // Copy to clipboard
+    // Copy to clipboard with visual feedback
     copyBtn.addEventListener('click', function() {
         const textToCopy = jsonOutput.textContent;
+        
+        // Don't copy if output is just placeholder text
+        if (textToCopy === 'Formatted JSON will appear here...' || 
+            textToCopy === 'Click "Format" or "Minify" to process the JSON') {
+            return;
+        }
+        
         navigator.clipboard.writeText(textToCopy).then(() => {
             const icon = copyBtn.querySelector('i');
             icon.classList.remove('far', 'fa-copy');
@@ -135,6 +143,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 2000);
         }).catch(err => {
             console.error('Failed to copy:', err);
+            jsonOutput.innerHTML = `<span class="invalid">✗ Failed to copy to clipboard</span>`;
         });
+    });
+
+    // Handle window resize to maintain proper layout
+    window.addEventListener('resize', function() {
+        syncScroll();
     });
 });

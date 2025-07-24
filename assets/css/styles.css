@@ -1094,3 +1094,54 @@ body {
         text-align: center;
     }
 }
+
+/* Fix for editor wrapper and line numbers */
+.editor-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: auto;
+}
+
+.line-numbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    padding: 15px 5px 15px 15px;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ddd;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #888;
+    text-align: right;
+    user-select: none;
+    overflow: hidden;
+}
+
+#jsonInput {
+    width: 100%;
+    min-height: 200px;
+    padding: 15px 15px 15px 60px !important; /* Important to override any other padding */
+    margin: 0;
+    border: none;
+    resize: vertical;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: white;
+    white-space: pre;
+    tab-size: 4;
+}
+
+/* Remove any unwanted padding */
+.editor-container {
+    padding: 0;
+}
+
+/* Make sure textarea has no extra spacing */
+textarea {
+    margin: 0;
+    border-radius: 0;
+}
