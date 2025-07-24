@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON to XML Converter | JSON Tools</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation included from main template -->
+        
+        <h1><i class="fas fa-code"></i> JSON to XML Converter</h1>
+        
+        <div class="converter-grid">
+            <div class="input-panel">
+                <div class="toolbar">
+                    <button id="sample-data" class="btn secondary">
+                        <i class="fas fa-vial"></i> Load Sample
+                    </button>
+                    <button id="clear-input" class="btn danger">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+                <div class="editor-container">
+                    <div class="editor-header">
+                        <span>JSON Input</span>
+                    </div>
+                    <div class="editor-wrapper">
+                        <div class="line-numbers">1</div>
+                        <textarea id="json-input" placeholder='Paste your JSON here...'></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output-panel">
+                <div class="toolbar">
+                    <button id="convert-btn" class="btn primary">
+                        <i class="fas fa-sync-alt"></i> Convert
+                    </button>
+                    <button id="download-xml" class="btn success">
+                        <i class="fas fa-download"></i> Download XML
+                    </button>
+                    <button id="copy-xml" class="btn secondary">
+                        <i class="far fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div class="result-container">
+                    <div class="result-header">
+                        <span>XML Output</span>
+                    </div>
+                    <div class="result-wrapper">
+                        <pre id="xml-output">XML data will appear here...</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="converter-options">
+            <h3>Conversion Options</h3>
+            <div class="options-grid">
+                <div>
+                    <label>
+                        <input type="checkbox" id="pretty-print" checked>
+                        Pretty Print
+                    </label>
+                </div>
+                <div>
+                    <label>Root Element Name:
+                        <input type="text" id="root-element" value="root">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="documentation-panel xml-panel">
+            <div class="documentation-section">
+                <h3><i class="fas fa-exchange-alt"></i> Conversion Rules</h3>
+                <ul class="rules-list">
+                    <li>JSON objects become XML elements</li>
+                    <li>JSON arrays become repeated elements</li>
+                    <li>Property names become element names</li>
+                    <li>Values become text content</li>
+                    <li>Supports nested structures</li>
+                </ul>
+            </div>
+
+            <div class="documentation-section">
+                <h3><i class="fas fa-exclamation-triangle"></i> Common Conversion Issues</h3>
+                <table class="error-table">
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Example</th>
+                            <th>Fix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Invalid XML tags</td>
+                            <td><code>{"1key": "val"}</code></td>
+                            <td>Rename to valid XML tag</td>
+                        </tr>
+                        <tr>
+                            <td>Special chars</td>
+                            <td><code>{"text": "<html>"}</code></td>
+                            <td>Use CDATA sections</td>
+                        </tr>
+                        <tr>
+                            <td>Mixed content</td>
+                            <td>Complex nested values</td>
+                            <td>Simplify structure</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pro-tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+                <ul>
+                    <li>Set root element name for cleaner XML</li>
+                    <li>Enable pretty print for readability</li>
+                    <li>Use condensed flow for compact output</li>
+                    <li>Check XML special character handling</li>
+                </ul>
+            </div>
+        </div> 
+    </div>
+
+    <!-- Load X2JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/x2js@3.4.0/x2js.min.js"></script>
+    <!-- Load our converter script -->
+    <script src="assets/js/xml-converter.js"></script>
+</body>
+</html>

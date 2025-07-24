@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Formatter | JSON Tools</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation included from main template -->
+        
+        <h1><i class="fas fa-indent"></i> JSON Formatter</h1>
+        
+        <div class="toolbar">
+            <button id="formatBtn" class="btn primary">
+                <i class="fas fa-indent"></i> Format
+            </button>
+            <button id="minifyBtn" class="btn secondary">
+                <i class="fas fa-compress"></i> Minify
+            </button>
+            <button id="copyBtn" class="btn secondary">
+                <i class="far fa-copy"></i> Copy
+            </button>
+            <button id="clearBtn" class="btn danger">
+                <i class="fas fa-trash"></i> Clear
+            </button>
+            <button id="sampleBtn" class="btn secondary">
+                <i class="fas fa-vial"></i> Sample
+            </button>
+        </div>
+        
+        <div class="editor-container">
+            <div class="editor-header">
+                <span>JSON Input</span>
+                <span id="charCount">0 characters</span>
+            </div>
+            <div class="editor-wrapper">
+                <div id="inputLineNumbers" class="line-numbers">1</div>
+                <textarea id="jsonInput" placeholder='Paste your JSON here or click "Sample"' spellcheck="false"></textarea>
+            </div>
+        </div>
+        
+        <div class="result-container">
+            <div class="result-header">
+                <span>Formatted Result</span>
+            </div>
+            <div class="result-wrapper">
+                <pre id="jsonOutput">Formatted JSON will appear here...</pre>
+            </div>
+        </div>
+
+        <div class="documentation-panel formatter-panel">
+            <div class="documentation-section">
+                <h3><i class="fas fa-indent"></i> Formatting Rules</h3>
+                <ul class="rules-list">
+                    <li>2 or 4 space indentation (configurable)</li>
+                    <li>Proper line breaks for objects and arrays</li>
+                    <li>Colon spacing consistency</li>
+                    <li>Automatic error detection and correction</li>
+                    <li>Preserves original JSON structure</li>
+                </ul>
+            </div>
+
+            <div class="documentation-section">
+                <h3><i class="fas fa-exclamation-triangle"></i> Common Formatting Issues</h3>
+                <table class="error-table">
+                    <thead>
+                        <tr>
+                            <th>Error</th>
+                            <th>Example</th>
+                            <th>Fix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Missing quotes</td>
+                            <td><code>{ key: "value" }</code></td>
+                            <td><code>{ "key": "value" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Inconsistent indentation</td>
+                            <td>Mixed tabs/spaces</td>
+                            <td>Choose either tabs or spaces</td>
+                        </tr>
+                        <tr>
+                            <td>Unclosed brackets</td>
+                            <td><code>{"a": [1, 2</code></td>
+                            <td><code>{"a": [1, 2]}</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pro-tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+                <ul>
+                    <li>Use the Format button to automatically fix indentation</li>
+                    <li>Click Sample to see properly formatted JSON</li>
+                    <li>Minify before deploying to production</li>
+                    <li>Copy/Paste your JSON to validate before formatting</li>
+                </ul>
+            </div>
+        </div> 
+    </div>
+
+    <script src="assets/js/formatter.js"></script>
+</body>
+</html>

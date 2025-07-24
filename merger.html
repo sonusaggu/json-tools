@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Merger | JSON Tools</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation included from main template -->
+        
+        <h1><i class="fas fa-code-branch"></i> JSON Merger</h1>
+        
+        <div class="toolbar">
+            <button id="mergeBtn" class="btn primary">
+                <i class="fas fa-code-branch"></i> Merge JSON
+            </button>
+            <select id="mergeStrategy" class="merge-strategy">
+                <option value="deep">Deep Merge</option>
+                <option value="shallow">Shallow Merge</option>
+                <option value="concat">Concatenate Arrays</option>
+                <option value="replace">Replace Conflicts</option>
+            </select>
+            <button id="addJsonBtn" class="btn secondary">
+                <i class="fas fa-plus"></i> Add JSON
+            </button>
+            <button id="clearBtn" class="btn danger">
+                <i class="fas fa-trash"></i> Clear All
+            </button>
+            <button id="sampleBtn" class="btn secondary">
+                <i class="fas fa-vial"></i> Samples
+            </button>
+        </div>
+        
+        <div id="jsonInputsContainer">
+            <div class="json-input-wrapper">
+                <div class="editor-header">
+                    <span>JSON 1</span>
+                    <button class="btn small danger remove-json-btn" data-index="0">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <div class="editor-wrapper">
+                    <div class="line-numbers">1</div>
+                    <textarea class="merger-json-input" placeholder='Paste JSON here' spellcheck="false"></textarea>
+                </div>
+            </div>
+            <div class="json-input-wrapper">
+                <div class="editor-header">
+                    <span>JSON 2</span>
+                    <button class="btn small danger remove-json-btn" data-index="1">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <div class="editor-wrapper">
+                    <div class="line-numbers">1</div>
+                    <textarea class="merger-json-input" placeholder='Paste JSON here' spellcheck="false"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-container">
+            <div class="result-header">
+                <span>Merged Result</span>
+                <button id="copyBtn" class="btn small secondary">
+                    <i class="far fa-copy"></i> Copy
+                </button>
+            </div>
+            <div class="result-wrapper">
+                <pre id="jsonOutput">Merged JSON will appear here...</pre>
+            </div>
+        </div>
+        
+        <div id="errorContainer" class="error-container hidden">
+            <div class="error-header">
+                <span>Merge Conflicts</span>
+            </div>
+            <div id="errorList" class="error-list"></div>
+        </div>
+
+        <div class="documentation-panel merge-panel">
+            <div class="documentation-section">
+                <h3><i class="fas fa-object-group"></i> Merge Rules</h3>
+                <ul class="rules-list">
+                    <li>Objects are merged recursively by default</li>
+                    <li>Array concatenation can be toggled</li>
+                    <li>Choose between shallow or deep merge</li>
+                    <li>Conflicting keys can be overwritten or preserved</li>
+                    <li>Supports merging multiple files simultaneously</li>
+                </ul>
+            </div>
+
+            <div class="documentation-section">
+                <h3><i class="fas fa-exclamation-triangle"></i> Common Merge Issues</h3>
+                <table class="error-table">
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Example</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Type conflicts</td>
+                            <td><code>{"a":1}</code> + <code>{"a":"1"}</code></td>
+                            <td>Enable type checking option</td>
+                        </tr>
+                        <tr>
+                            <td>Array duplication</td>
+                            <td><code>{"a":[1]} + {"a":[2]}</code></td>
+                            <td>Toggle array concatenation</td>
+                        </tr>
+                        <tr>
+                            <td>Circular references</td>
+                            <td>Self-referencing objects</td>
+                            <td>Enable circular reference detection</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pro-tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+                <ul>
+                    <li>Use deep merge for nested structures</li>
+                    <li>Preview changes before final merge</li>
+                    <li>Save merge presets for recurring patterns</li>
+                    <li>Validate output after merging</li>
+                </ul>
+            </div>
+        </div>    
+    </div>
+
+    <script src="assets/js/merger.js"></script>
+</body>
+</html>

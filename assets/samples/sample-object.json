@@ -1,0 +1,12 @@
+{
+    "user": {
+        "id": 123,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "roles": ["admin", "user"],
+        "metadata": {
+            "createdAt": "2023-01-01",
+            "lastLogin": "2023-05-15"
+        }
+    }
+}
