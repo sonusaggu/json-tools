@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Stringify | JSON Tools</title>
+
+    <title>JSON Stringify | Online Converter & Formatter - JSON Tools</title>
+
+    <meta name="description" content="Convert JavaScript objects to properly formatted JSON strings with indentation, escaping, and download options using JSON Stringify tool.">
+    <meta name="keywords" content="JSON Stringify, JavaScript to JSON, JSON Converter, Stringify JSON, Escape Characters, JSON Tools, JSON Formatter">
+    <meta name="author" content="JSON Tools">
+
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <meta name="description" content="Convert JavaScript objects to JSON strings with formatting options">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <div class="container">
         <header class="tool-header">
             <h1><i class="fas fa-quote-right"></i> JSON Stringify</h1>
-            <p class="tool-description">Convert JavaScript objects to properly formatted JSON strings</p>
         </header>
-        
+
         <div class="converter-grid">
             <div class="input-panel">
                 <div class="toolbar">
@@ -39,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="output-panel">
                 <div class="toolbar">
                     <button id="stringify-btn" class="btn primary" aria-label="Stringify JSON">
@@ -65,7 +69,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="converter-options">
             <h3><i class="fas fa-cog"></i> Stringify Options</h3>
             <div class="options-grid">
@@ -102,10 +106,9 @@
                 <h3><i class="fas fa-info-circle"></i> Stringify Rules</h3>
                 <ul class="rules-list">
                     <li><i class="fas fa-check-circle"></i> Converts JavaScript objects to JSON strings</li>
-                    <li><i class="fas fa-check-circle"></i> Handles all valid JSON data types (strings, numbers, arrays, objects, booleans, null)</li>
-                    <li><i class="fas fa-check-circle"></i> Properly escapes special characters when enabled</li>
-                    <li><i class="fas fa-check-circle"></i> Optionally formats with indentation (spaces or tabs)</li>
-                    <li><i class="fas fa-check-circle"></i> Preserves data types during conversion</li>
+                    <li><i class="fas fa-check-circle"></i> Supports all valid JSON types (string, number, array, object, boolean, null)</li>
+                    <li><i class="fas fa-check-circle"></i> Option to escape special characters</li>
+                    <li><i class="fas fa-check-circle"></i> Adjustable indentation (pretty or minified)</li>
                 </ul>
             </div>
 
@@ -124,22 +127,22 @@
                             <tr>
                                 <td>Circular references</td>
                                 <td><code>let a = {}; a.b = a;</code></td>
-                                <td>Remove circular references or use <code>JSON.stringify()</code> with a replacer function</td>
+                                <td>Remove circular references or use a custom replacer</td>
                             </tr>
                             <tr>
                                 <td>Non-JSON values</td>
                                 <td><code>{date: new Date()}</code></td>
-                                <td>Convert to string or use replacer function</td>
+                                <td>Convert to ISO string before stringifying</td>
                             </tr>
                             <tr>
-                                <td>Malformed JSON</td>
+                                <td>Undefined values</td>
                                 <td><code>{key: undefined}</code></td>
-                                <td>Ensure all values are JSON-compatible (remove undefined values)</td>
+                                <td>Filter out or convert to null</td>
                             </tr>
                             <tr>
-                                <td>Large objects</td>
+                                <td>Large data</td>
                                 <td><code>{data: [...]} // 10MB+</code></td>
-                                <td>Process in chunks or use streaming JSON parser</td>
+                                <td>Use streaming or chunking strategies</td>
                             </tr>
                         </tbody>
                     </table>
@@ -149,11 +152,10 @@
             <div class="pro-tips">
                 <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
                 <ul class="tips-list">
-                    <li><i class="fas fa-check"></i> Use pretty printing for debugging and development</li>
-                    <li><i class="fas fa-check"></i> For APIs, use compact format to reduce payload size</li>
-                    <li><i class="fas fa-check"></i> Handle dates/functions with custom replacer functions</li>
-                    <li><i class="fas fa-check"></i> Validate JSON before stringifying to catch errors early</li>
-                    <li><i class="fas fa-check"></i> For large datasets, consider processing in batches</li>
+                    <li><i class="fas fa-check"></i> Pretty print for debugging, minify for production</li>
+                    <li><i class="fas fa-check"></i> Validate your input before stringifying</li>
+                    <li><i class="fas fa-check"></i> Use custom replacer functions for advanced control</li>
+                    <li><i class="fas fa-check"></i> Copy or download results directly</li>
                 </ul>
             </div>
         </div>
