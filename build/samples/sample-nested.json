@@ -1,0 +1,27 @@
+{
+    "store": {
+        "name": "My Shop",
+        "location": {
+            "city": "New York",
+            "country": "USA"
+        },
+        "products": [
+            {
+                "id": 1,
+                "name": "Laptop",
+                "specs": {
+                    "cpu": "i7",
+                    "ram": "16GB"
+                }
+            },
+            {
+                "id": 2,
+                "name": "Phone",
+                "specs": {
+                    "os": "Android",
+                    "storage": "128GB"
+                }
+            }
+        ]
+    }
+}
