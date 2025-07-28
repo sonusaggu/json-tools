@@ -156,12 +156,105 @@
                 width: 100%;
             }
         }
+        /* Clean & modern navbar styling */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.navbar-logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu li a {
+  text-decoration: none;
+  color: #374151;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.navbar-menu li a:hover,
+.navbar-menu li a.active {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.documentation {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.documentation h2, 
+.documentation h3 {
+  color: var(--primary);
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.documentation ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.documentation li {
+  margin-bottom: 8px;
+}
+
+
     </style>
 </head>
 <body>
+      
     <div class="container">
         <h1><i class="fas fa-code"></i> JSON Editor</h1>
-        
+        <nav class="navbar">
+            <div class="navbar-container">
+              <a href="/" class="navbar-logo"></a>
+              <ul class="navbar-menu">
+                <li><a href="/json-validator.html">Validator</a></li>
+                <li><a href="/json-formatter.html">Formatter</a></li>
+                <li><a href="/json-diff.html">Diff</a></li>
+                <li><a href="/json-merger.html">Merger</a></li>
+                <li><a href="/json-to-csv.html">To CSV</a></li>
+                <li><a href="/json-to-xml.html">To XML</a></li>
+                <li><a href="/json-to-yaml.html">To YAML</a></li>
+                <li><a href="/json-schema-generator.html">Schema</a></li>
+                <li><a href="/jsoneditor.html">Editor</a></li>
+                <li><a href="/json-to-stringify.html">Stringify</a></li>
+              </ul>
+            </div>
+          </nav>
         <div class="toolbar">
             <button id="format" class="btn-primary">
                 <i class="fas fa-indent"></i> Format
@@ -207,7 +300,44 @@
                 <i class="far fa-copy"></i> Copy JSON
             </button>
         </div>
+        <div class="documentation">
+            <h2><i class="fas fa-book-open"></i> How to Use JSON Editor</h2>
+            <p>This online JSON editor helps you view, edit, format, and validate your JSON data with ease. Here’s how to use it:</p>
+          
+            <h3>🎯 Features Overview:</h3>
+            <ul>
+              <li><strong>Tree View</strong> – Visually browse and interact with JSON in an expandable tree format.</li>
+              <li><strong>Code View</strong> – Edit raw JSON with syntax highlighting and auto-formatting.</li>
+              <li><strong>Form View</strong> – Interact with JSON as a form, great for structured data.</li>
+              <li><strong>Text View</strong> – Plain text mode for quick copy-paste or debugging.</li>
+              <li><strong>View Only</strong> – Safely inspect JSON without editing capabilities.</li>
+            </ul>
+          
+            <h3>🛠️ Toolbar Actions:</h3>
+            <ul>
+              <li><strong>Format</strong> – Beautifies the JSON for better readability.</li>
+              <li><strong>Compact</strong> – Minifies the JSON by removing unnecessary whitespace.</li>
+              <li><strong>Validate</strong> – Instantly checks if your JSON is valid.</li>
+              <li><strong>View JSON</strong> – Displays formatted JSON in a read-only block below the editor.</li>
+              <li><strong>Clear</strong> – Resets the editor to a blank state.</li>
+            </ul>
+          
+            <h3>📁 File Operations:</h3>
+            <ul>
+              <li><strong>Load File</strong> – Upload a local `.json` file to view or edit.</li>
+              <li><strong>Save File</strong> – Download the edited JSON to your device.</li>
+              <li><strong>Copy JSON</strong> – Copies the current JSON to your clipboard.</li>
+            </ul>
+          
+            <h3>🎨 Themes:</h3>
+            <p>Switch between <strong>Light</strong> and <strong>Dark</strong> themes using the dropdown menu for better readability based on your environment.</p>
+          
+            <h3>🔄 Modes:</h3>
+            <p>Choose your preferred editing mode via the <strong>Mode</strong> dropdown. You can switch between views at any time without losing data.</p>
+          </div>
     </div>
+   
+      
 
     <!-- Font Awesome for icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>

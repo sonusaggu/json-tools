@@ -1192,3 +1192,50 @@ textarea {
     }
   }
   
+  /* Clean & modern navbar styling */
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 20px;
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .navbar-logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #2c3e50;
+    text-decoration: none;
+  }
+  
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-menu li a {
+    text-decoration: none;
+    color: #374151;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .navbar-menu li a:hover,
+  .navbar-menu li a.active {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+  
