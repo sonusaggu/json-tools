@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>JSON to POJO Converter | Online Tool</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Free online JSON to POJO converter tool for Java, Python, TypeScript, and JavaScript. Convert JSON to classes instantly.">
-    <meta name="keywords" content="JSON to POJO, JSON to class, JSON to Java, JSON to Python, JSON to TypeScript, JSON converter">
-    <meta name="author" content="Code Tools">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/styles.css">
-   
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Free online JSON to POJO converter tool for Java, Python, TypeScript, and JavaScript. Convert JSON to classes instantly." />
+    <meta name="keywords" content="JSON to POJO, JSON to class, JSON to Java, JSON to Python, JSON to TypeScript, JSON converter" />
+    <meta name="author" content="Code Tools" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-container">
           <a href="/" class="navbar-logo">JSON Tools</a>
           <ul class="navbar-menu">
@@ -29,56 +28,61 @@
             <li><a href="/json-to-stringify.html">Stringify</a></li>
           </ul>
         </div>
-      </nav>
-    
-    <div class="container">
-        <h1><i class="fas fa-code"></i> JSON to POJO Converter</h1>
-        
-        <div class="toolbar">
-            <select id="targetLanguage" class="btn secondary">
+    </nav>
+
+    <main class="container" role="main">
+        <header>
+            <h1><i class="fas fa-code" aria-hidden="true"></i> JSON to POJO Converter</h1>
+            <p class="sr-only">Convert your JSON data into POJOs or class structures for Java, Python, TypeScript, and JavaScript.</p>
+        </header>
+
+        <section class="toolbar" aria-label="Conversion controls">
+            <label for="targetLanguage" class="sr-only">Select target language</label>
+            <select id="targetLanguage" class="btn secondary" aria-describedby="languageDesc">
                 <option value="java">Java</option>
                 <option value="python">Python</option>
                 <option value="typescript">TypeScript</option>
                 <option value="javascript">JavaScript</option>
             </select>
-            <button id="convertBtn" class="btn primary">
-                <i class="fas fa-exchange-alt"></i> Convert
+            <span id="languageDesc" class="sr-only">Choose the programming language for generated classes</span>
+
+            <button id="convertBtn" class="btn primary" aria-label="Convert JSON to POJO classes">
+                <i class="fas fa-exchange-alt" aria-hidden="true"></i> Convert
             </button>
-            <button id="copyBtn" class="btn secondary">
-                <i class="far fa-copy"></i> Copy
+            <button id="copyBtn" class="btn secondary" aria-label="Copy converted POJO output">
+                <i class="far fa-copy" aria-hidden="true"></i> Copy
             </button>
-            <button id="clearBtn" class="btn danger">
-                <i class="fas fa-trash"></i> Clear
+            <button id="clearBtn" class="btn danger" aria-label="Clear JSON input and POJO output">
+                <i class="fas fa-trash" aria-hidden="true"></i> Clear
             </button>
-            <button id="sampleBtn" class="btn secondary">
-                <i class="fas fa-vial"></i> Sample
+            <button id="sampleBtn" class="btn secondary" aria-label="Load sample JSON input">
+                <i class="fas fa-vial" aria-hidden="true"></i> Sample
             </button>
-        </div>
-        
-        
-        <div class="editor-container">
+        </section>
+
+        <section class="editor-container" aria-label="JSON input editor">
             <div class="editor-header">
                 <span>JSON Input</span>
-                <span id="charCount">0 characters</span>
+                <span id="charCount" aria-live="polite" aria-atomic="true">0 characters</span>
             </div>
             <div class="editor-wrapper">
-                <div id="inputLineNumbers" class="line-numbers">1</div>
-                <textarea id="jsonInput" placeholder='Paste your JSON here or click "Sample"' spellcheck="false"></textarea>
+                <div id="inputLineNumbers" class="line-numbers" aria-hidden="true">1</div>
+                <textarea id="jsonInput" placeholder='Paste your JSON here or click "Sample"' spellcheck="false" aria-describedby="charCount"></textarea>
             </div>
-        </div>
-        
-        <div class="result-container">
+        </section>
+
+        <section class="result-container" aria-label="POJO output">
             <div class="result-header">
                 <span>POJO Output</span>
             </div>
             <div class="result-wrapper">
-                <pre id="pojoOutput">Converted POJO will appear here...</pre>
+                <pre id="pojoOutput" tabindex="0" aria-live="polite" aria-atomic="true">Converted POJO will appear here...</pre>
             </div>
-        </div>
+        </section>
 
-        <div class="documentation-panel">
-            <div class="documentation-section">
-                <h3><i class="fas fa-info-circle"></i> About POJO Conversion</h3>
+        <section class="documentation-panel" aria-label="Documentation and tips">
+            <article class="documentation-section">
+                <h2><i class="fas fa-info-circle" aria-hidden="true"></i> About POJO Conversion</h2>
                 <p>This tool converts JSON data to Plain Old Java Objects (POJOs) or equivalent class structures in Python, TypeScript, and JavaScript. The converter handles:</p>
                 <ul>
                     <li>Basic data types (strings, numbers, booleans)</li>
@@ -86,15 +90,15 @@
                     <li>Proper type definitions for each language</li>
                     <li>Class/interface structure generation</li>
                 </ul>
-            </div>
+            </article>
 
-            <div class="documentation-section">
-                <h3><i class="fas fa-exclamation-triangle"></i> Common Conversion Issues</h3>
+            <article class="documentation-section">
+                <h2><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Common Conversion Issues</h2>
                 <table class="error-table">
                     <thead>
                         <tr>
-                            <th>Issue</th>
-                            <th>Solution</th>
+                            <th scope="col">Issue</th>
+                            <th scope="col">Solution</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,19 +116,19 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </article>
 
-            <div class="documentation-section">
-                <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+            <article class="documentation-section">
+                <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> Pro Tips</h3>
                 <ul>
                     <li>Use the sample button to see example conversions</li>
                     <li>For Java, copy the generated classes to your IDE</li>
                     <li>For TypeScript, the generated interfaces are ready to use</li>
                     <li>Python dataclasses require Python 3.7+</li>
                 </ul>
-            </div>
-        </div> 
-    </div>
+            </article>
+        </section> 
+    </main>
 
     <script src="assets/js/pojo-converter.js"></script>
 </body>

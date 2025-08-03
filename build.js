@@ -9,7 +9,7 @@ const ROOT = path.resolve('.');
 const ASSETS = path.join(ROOT, 'assets');
 const JS_SRC = path.join(ASSETS, 'js');
 const CSS_SRC = path.join(ASSETS, 'css');
-const SAMPLE_SRC = path.join(ROOT, 'sample');
+const SAMPLE_SRC = path.join(ASSETS, 'sample');
 
 // Build output folder
 const BUILD = path.join(ROOT, 'build');

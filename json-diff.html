@@ -1,207 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Diff Tool | Compare JSON Files Online</title>
-    <meta name="description" content="Compare two JSON files and visualize differences with highlighted changes. Perfect for version comparison and debugging JSON data.">
-    <meta name="keywords" content="JSON diff, JSON compare, JSON difference, JSON comparison tool, JSON change detection">
-    <meta name="author" content="JSON Tools">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON Diff Tool | Compare JSON Files Online</title>
+  <meta
+    name="description"
+    content="Compare two JSON files and visualize differences with highlighted changes. Perfect for version comparison and debugging JSON data."
+  />
+  <meta
+    name="keywords"
+    content="JSON diff, JSON compare, JSON difference, JSON comparison tool, JSON change detection"
+  />
+  <meta name="author" content="JSON Tools" />
 
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-    
-    <style>
-        .diff-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .editor-columns {
-            display: flex;
-            gap: 20px;
-        }
-        .editor-column {
-            flex: 1;
-        }
-        .diff-results {
-            margin-top: 20px;
-        }
-        .diff-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        .diff-table th, .diff-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .diff-table th {
-            background-color: #f5f5f5;
-        }
-        .diff-added {
-            background-color: #e6ffed;
-        }
-        .diff-removed {
-            background-color: #ffebee;
-            text-decoration: line-through;
-        }
-        .diff-changed {
-            background-color: #fff3bf;
-        }
-        .diff-marker {
-            font-weight: bold;
-            color: #666;
-        }
-        .diff-summary {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .diff-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .error-line {
-            background-color: #ffebee;
-        }
-    </style>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+
+  <style>
+    .diff-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .editor-columns {
+      display: flex;
+      gap: 20px;
+    }
+    .editor-column {
+      flex: 1;
+    }
+    .diff-results {
+      margin-top: 20px;
+    }
+    .diff-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .diff-table th,
+    .diff-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    .diff-table th {
+      background-color: #f5f5f5;
+    }
+    .diff-added {
+      background-color: #e6ffed;
+    }
+    .diff-removed {
+      background-color: #ffebee;
+      text-decoration: line-through;
+    }
+    .diff-changed {
+      background-color: #fff3bf;
+    }
+    .diff-marker {
+      font-weight: bold;
+      color: #666;
+    }
+    .diff-summary {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .diff-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .error-line {
+      background-color: #ffebee;
+    }
+  </style>
 </head>
 <body>
-
-    <nav class="navbar">
-        <div class="navbar-container">
-          <a href="/" class="navbar-logo">JSON Tools</a>
-          <ul class="navbar-menu">
-            <li><a href="/json-validator.html">Validator</a></li>
-            <li><a href="/json-formatter.html">Formatter</a></li>
-            <li><a href="/json-diff.html">Diff</a></li>
-            <li><a href="/json-merger.html">Merger</a></li>
-            <li><a href="/json-to-csv.html">To CSV</a></li>
-            <li><a href="/json-to-xml.html">To XML</a></li>
-            <li><a href="/json-to-yaml.html">To YAML</a></li>
-            <li><a href="/json-schema-generator.html">Schema</a></li>
-            <li><a href="/jsoneditor.html">Editor</a></li>
-            <li><a href="/json-to-stringify.html">Stringify</a></li>
-          </ul>
-        </div>
-      </nav>
-      
-    
-      
-    <div class="container">
-        <h1><i class="fas fa-code-compare"></i> JSON Diff Tool</h1>
-        
-        <div class="diff-container">
-            <div class="editor-columns">
-                <div class="editor-column">
-                    <div class="toolbar">
-                        <button id="sample1-btn" class="btn secondary">
-                            <i class="fas fa-vial"></i> Sample 1
-                        </button>
-                        <button id="clear1-btn" class="btn danger">
-                            <i class="fas fa-trash"></i> Clear
-                        </button>
-                    </div>
-                    <div class="editor-container">
-                        <div class="editor-header">
-                            <span>Original JSON</span>
-                            <span id="char-count1">0 characters</span>
-                        </div>
-                        <div class="editor-wrapper">
-                            <div id="line-numbers1" class="line-numbers">1</div>
-                            <textarea id="json-input1" placeholder='Paste first JSON here...' spellcheck="false"></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="editor-column">
-                    <div class="toolbar">
-                        <button id="sample2-btn" class="btn secondary">
-                            <i class="fas fa-vial"></i> Sample 2
-                        </button>
-                        <button id="clear2-btn" class="btn danger">
-                            <i class="fas fa-trash"></i> Clear
-                        </button>
-                    </div>
-                    <div class="editor-container">
-                        <div class="editor-header">
-                            <span>Modified JSON</span>
-                            <span id="char-count2">0 characters</span>
-                        </div>
-                        <div class="editor-wrapper">
-                            <div id="line-numbers2" class="line-numbers">1</div>
-                            <textarea id="json-input2" placeholder='Paste second JSON here...' spellcheck="false"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="toolbar">
-                <button id="compare-btn" class="btn primary">
-                    <i class="fas fa-code-compare"></i> Compare JSON
-                </button>
-                <button id="clear-all-btn" class="btn danger">
-                    <i class="fas fa-broom"></i> Clear All
-                </button>
-            </div>
-            
-            <div class="diff-results">
-                <div class="result-header">
-                    <span>Comparison Results</span>
-                    <span id="diff-count">0 differences</span>
-                </div>
-                <div class="result-wrapper">
-                    <div id="diff-output">Comparison results will appear here...</div>
-                </div>
-            </div>
-            
-            <div class="documentation-panel">
-                <div class="documentation-section">
-                    <h3><i class="fas fa-info-circle"></i> How to Use</h3>
-                    <ul class="rules-list">
-                        <li>Paste your original JSON in the left editor</li>
-                        <li>Paste the modified JSON in the right editor</li>
-                        <li>Click "Compare JSON" to see differences</li>
-                        <li>Use "Sample" buttons to load example JSONs</li>
-                    </ul>
-                </div>
-
-                <div class="documentation-section">
-                    <h3><i class="fas fa-code-compare"></i> Diff Legend</h3>
-                    <table class="error-table">
-                        <thead>
-                            <tr>
-                                <th>Element</th>
-                                <th>Color</th>
-                                <th>Meaning</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="diff-added">Added</span></td>
-                                <td>Green</td>
-                                <td>Present in right JSON but not in left</td>
-                            </tr>
-                            <tr>
-                                <td><span class="diff-removed">Removed</span></td>
-                                <td>Red</td>
-                                <td>Present in left JSON but not in right</td>
-                            </tr>
-                            <tr>
-                                <td><span class="diff-changed">Changed</span></td>
-                                <td>Yellow</td>
-                                <td>Value differs between both JSONs</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar" role="navigation" aria-label="Main Navigation">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">JSON Tools</a>
+      <ul class="navbar-menu">
+        <li><a href="/json-validator.html">Validator</a></li>
+        <li><a href="/json-formatter.html">Formatter</a></li>
+        <li><a href="/json-diff.html" aria-current="page">Diff</a></li>
+        <li><a href="/json-merger.html">Merger</a></li>
+        <li><a href="/json-to-csv.html">To CSV</a></li>
+        <li><a href="/json-to-xml.html">To XML</a></li>
+        <li><a href="/json-to-yaml.html">To YAML</a></li>
+        <li><a href="/json-schema-generator.html">Schema</a></li>
+        <li><a href="/jsoneditor.html">Editor</a></li>
+        <li><a href="/json-to-stringify.html">Stringify</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <script src="assets/js/json-diff.js"></script>
+  <main class="container" role="main">
+    <h1>
+      <i class="fas fa-code-compare" aria-hidden="true"></i> JSON Diff Tool
+    </h1>
+
+    <div class="diff-container">
+      <div class="editor-columns">
+        <section class="editor-column" aria-label="Original JSON input">
+          <div class="toolbar">
+            <button
+              id="sample1-btn"
+              class="btn secondary"
+              type="button"
+              aria-label="Load sample JSON 1"
+            >
+              <i class="fas fa-vial" aria-hidden="true"></i> Sample 1
+            </button>
+            <button
+              id="clear1-btn"
+              class="btn danger"
+              type="button"
+              aria-label="Clear original JSON input"
+            >
+              <i class="fas fa-trash" aria-hidden="true"></i> Clear
+            </button>
+          </div>
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Original JSON</span>
+              <span id="char-count1" aria-live="polite">0 characters</span>
+            </div>
+            <div class="editor-wrapper">
+              <div id="line-numbers1" class="line-numbers" aria-hidden="true">1</div>
+              <textarea
+                id="json-input1"
+                placeholder="Paste first JSON here..."
+                spellcheck="false"
+                aria-label="Original JSON input"
+              ></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="editor-column" aria-label="Modified JSON input">
+          <div class="toolbar">
+            <button
+              id="sample2-btn"
+              class="btn secondary"
+              type="button"
+              aria-label="Load sample JSON 2"
+            >
+              <i class="fas fa-vial" aria-hidden="true"></i> Sample 2
+            </button>
+            <button
+              id="clear2-btn"
+              class="btn danger"
+              type="button"
+              aria-label="Clear modified JSON input"
+            >
+              <i class="fas fa-trash" aria-hidden="true"></i> Clear
+            </button>
+          </div>
+          <div class="editor-container">
+            <div class="editor-header">
+              <span>Modified JSON</span>
+              <span id="char-count2" aria-live="polite">0 characters</span>
+            </div>
+            <div class="editor-wrapper">
+              <div id="line-numbers2" class="line-numbers" aria-hidden="true">1</div>
+              <textarea
+                id="json-input2"
+                placeholder="Paste second JSON here..."
+                spellcheck="false"
+                aria-label="Modified JSON input"
+              ></textarea>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="toolbar" role="region" aria-label="Comparison controls">
+        <button
+          id="compare-btn"
+          class="btn primary"
+          type="button"
+          aria-label="Compare JSON files"
+        >
+          <i class="fas fa-code-compare" aria-hidden="true"></i> Compare JSON
+        </button>
+        <button
+          id="clear-all-btn"
+          class="btn danger"
+          type="button"
+          aria-label="Clear all inputs and results"
+        >
+          <i class="fas fa-broom" aria-hidden="true"></i> Clear All
+        </button>
+      </div>
+
+      <section
+        class="diff-results"
+        aria-label="JSON comparison results"
+        tabindex="0"
+      >
+        <div class="result-header">
+          <span>Comparison Results</span>
+          <span id="diff-count" aria-live="polite">0 differences</span>
+        </div>
+        <div class="result-wrapper">
+          <div
+            id="diff-output"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-relevant="additions text"
+          >
+            Comparison results will appear here...
+          </div>
+        </div>
+      </section>
+
+      <aside class="documentation-panel" aria-label="Documentation and help">
+        <article class="documentation-section">
+          <h2>
+            <i class="fas fa-info-circle" aria-hidden="true"></i> How to Use
+          </h2>
+          <ul class="rules-list">
+            <li>Paste your original JSON in the left editor</li>
+            <li>Paste the modified JSON in the right editor</li>
+            <li>Click "Compare JSON" to see differences</li>
+            <li>Use "Sample" buttons to load example JSONs</li>
+          </ul>
+        </article>
+
+        <article class="documentation-section">
+          <h2>
+            <i class="fas fa-code-compare" aria-hidden="true"></i> Diff Legend
+          </h2>
+          <table class="error-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Color</th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="diff-added">Added</span></td>
+                <td>Green</td>
+                <td>Present in right JSON but not in left</td>
+              </tr>
+              <tr>
+                <td><span class="diff-removed">Removed</span></td>
+                <td>Red</td>
+                <td>Present in left JSON but not in right</td>
+              </tr>
+              <tr>
+                <td><span class="diff-changed">Changed</span></td>
+                <td>Yellow</td>
+                <td>Value differs between both JSONs</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </aside>
+    </div>
+  </main>
+
+  <script src="assets/js/json-diff.js" defer></script>
 </body>
 </html>
